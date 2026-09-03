@@ -1,0 +1,3046 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FacaHub | Biblioteca de Facas</title>
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a7a4c;
+            --primary-light: #e8f5ed;
+            --primary-dark: #0f5233;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --radius: 10px;
+            --transition: all 0.2s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .user-info {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-role {
+            font-size: 0.65rem;
+            background: var(--gray-200);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            color: var(--gray-600);
+        }
+
+        /* ===== BOTÕES ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+        .btn-outline:hover {
+            background: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            opacity: 0.85;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            opacity: 0.85;
+        }
+
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 0.75rem;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-clear {
+            background: var(--gray-200);
+            color: var(--gray-600);
+        }
+        .btn-clear:hover {
+            background: var(--gray-300);
+        }
+
+        /* ===== PÁGINA DE LOGIN ===== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-light) 0%, white 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card .logo {
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .login-card h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--gray-800);
+        }
+
+        .login-card p {
+            text-align: center;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+        }
+
+        .login-card .form-group {
+            margin-bottom: 16px;
+        }
+
+        .login-card label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            margin-bottom: 4px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .login-card input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 122, 76, 0.1);
+        }
+
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: var(--gray-400);
+            font-size: 0.8rem;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .login-divider::before {
+            margin-right: 10px;
+        }
+        .login-divider::after {
+            margin-left: 10px;
+        }
+
+        .login-credentials {
+            background: var(--gray-50);
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            margin-top: 16px;
+        }
+
+        .login-credentials strong {
+            color: var(--gray-800);
+        }
+
+        /* ===== PÁGINAS ===== */
+        .page {
+            display: none;
+            padding: 24px 0;
+        }
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .page-header .subtitle {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .stat-card .label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        .stat-card .number.green {
+            color: var(--success);
+        }
+        .stat-card .number.yellow {
+            color: var(--warning);
+        }
+        .stat-card .number.red {
+            color: var(--danger);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 16px 20px;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-100);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .list-item:hover {
+            background: var(--gray-50);
+            margin: 0 -20px;
+            padding: 10px 20px;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item .title {
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .list-item .subtitle {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .list-item .date {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            white-space: nowrap;
+        }
+
+        /* ===== BIBLIOTECA - BUSCA ===== */
+        .search-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-main {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .search-main .search-input-wrapper {
+            flex: 1;
+            position: relative;
+            min-width: 200px;
+        }
+
+        .search-main .search-input-wrapper input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--gray-50);
+        }
+
+        .search-main .search-input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 122, 76, 0.1);
+        }
+
+        .search-main .search-input-wrapper .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 1.1rem;
+        }
+
+        .search-main .search-input-wrapper .clear-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 4px;
+            display: none;
+        }
+
+        .search-main .search-input-wrapper .clear-btn.visible {
+            display: block;
+        }
+
+        .search-main .search-input-wrapper .clear-btn:hover {
+            color: var(--gray-600);
+        }
+
+        .search-main .btn-search {
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .search-main .btn-search:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-filters select {
+            padding: 8px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            background: white;
+            transition: var(--transition);
+            min-width: 120px;
+        }
+
+        .search-filters select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 122, 76, 0.1);
+        }
+
+        .search-filters .filter-label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+
+        .search-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--gray-200);
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .search-stats .result-count {
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .search-stats .result-count strong {
+            color: var(--primary);
+        }
+
+        .search-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .search-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .search-tag .remove-tag {
+            cursor: pointer;
+            font-weight: 700;
+            margin-left: 4px;
+            opacity: 0.6;
+        }
+
+        .search-tag .remove-tag:hover {
+            opacity: 1;
+        }
+
+        .search-suggestions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .search-suggestions .suggestion {
+            background: var(--gray-100);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-suggestions .suggestion:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        /* ===== FACAS GRID ===== */
+        .facas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .faca-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .faca-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faca-preview {
+            background: var(--gray-50);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 140px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .faca-preview svg {
+            max-width: 100%;
+            max-height: 120px;
+        }
+
+        .faca-info {
+            padding: 14px 16px;
+        }
+
+        .faca-code {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .faca-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 2px 0 4px;
+        }
+
+        .faca-details {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .faca-dimensions {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin: 6px 0 10px;
+        }
+
+        .faca-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .badge-revisao {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+        .badge-inativo {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .badge-admin {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .badge-arte-final {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+        .badge-consulta {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .faca-version {
+            font-size: 0.7rem;
+            color: var(--gray-400);
+        }
+
+        /* ===== FORMULÁRIO ===== */
+        .form-card {
+            background: white;
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--gray-700);
+            margin-bottom: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 122, 76, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 8px;
+            border: 2px dashed var(--gray-300);
+            cursor: pointer;
+        }
+
+        .form-group input[type="file"]:hover {
+            border-color: var(--primary);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin: 16px 0 8px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* ===== VISUALIZADOR SVG ===== */
+        .svg-preview-container {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 16px 0;
+            border: 1px solid var(--gray-200);
+        }
+
+        .svg-preview-container svg {
+            width: 100%;
+            max-height: 300px;
+        }
+
+        /* ===== DETALHES ===== */
+        .detalhes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .detalhes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-row {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .info-row .label {
+            font-weight: 600;
+            color: var(--gray-500);
+            width: 120px;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .info-row .value {
+            font-size: 0.9rem;
+        }
+
+        .versoes-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .versao-item {
+            padding: 12px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            background: white;
+        }
+
+        .versao-item.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .versao-item .versao-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .versao-item .versao-num {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .versao-item .versao-dims {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        /* ===== USUÁRIOS ===== */
+        .users-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .user-item .user-email {
+            font-weight: 500;
+        }
+
+        .user-item .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .toast-success {
+            background: var(--success);
+        }
+        .toast-error {
+            background: var(--danger);
+        }
+        .toast-warning {
+            background: var(--warning);
+        }
+        .toast-info {
+            background: var(--primary);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-400);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-500);
+        }
+
+        .empty-state .icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        /* ===== UTILITÁRIOS ===== */
+        .text-center {
+            text-align: center;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        .items-center {
+            align-items: center;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .facas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-main {
+                flex-direction: column;
+            }
+
+            .search-main .search-input-wrapper {
+                min-width: auto;
+            }
+
+            .search-main .btn-search {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .search-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filters select {
+                width: 100%;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .login-card {
+                padding: 24px;
+            }
+
+            .detalhes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .info-row .label {
+                width: auto;
+            }
+
+            .user-item {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .user-item .user-info {
+                justify-content: center;
+            }
+
+            .search-stats {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-card .number {
+                font-size: 1.5rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--gray-100);
+            padding: 4px;
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            color: var(--gray-600);
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--gray-800);
+            box-shadow: var(--shadow);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--gray-800);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Status de conexão com Supabase */
+        .db-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            background: var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        .db-status.online {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .db-status.offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .db-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .db-status.online .dot {
+            background: var(--success);
+        }
+        .db-status.offline .dot {
+            background: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="mainHeader" style="display:none;">
+        <div class="app-container">
+            <div class="header-content">
+                <a href="#" class="logo" onclick="navigateTo('dashboard')">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <rect x="4" y="4" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 16L14 20L22 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>FacaHub</span>
+                    <span class="db-status" id="dbStatus">
+                        <span class="dot"></span>
+                        <span id="dbStatusText">Conectando...</span>
+                    </span>
+                </a>
+
+                <div class="header-actions">
+                    <span class="user-info">
+                        <span class="user-avatar" id="userAvatar">U</span>
+                        <span id="userName">Usuário</span>
+                        <span class="user-role" id="userRole">consulta</span>
+                    </span>
+                    <button class="btn btn-outline btn-sm" onclick="handleLogout()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="app-container">
+
+        <!-- ===== PÁGINA: LOGIN ===== -->
+        <div class="page active" id="page-login">
+            <div class="login-page">
+                <div class="login-card">
+                    <div class="logo">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <rect x="4" y="4" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M10 16L14 20L22 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>FacaHub</span>
+                    </div>
+                    <h1>Bem-vindo</h1>
+                    <p>Biblioteca de Facas e Gabaritos</p>
+
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="loginEmail">E-mail</label>
+                            <input type="email" id="loginEmail" placeholder="seu@email.com" value="admin@facahub.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Senha</label>
+                            <input type="password" id="loginPassword" placeholder="••••••••" value="admin123" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    </form>
+
+                    <div class="login-divider">ou</div>
+
+                    <button class="btn btn-outline btn-block" onclick="showRegisterForm()">
+                        📝 Criar nova conta
+                    </button>
+
+                    <div class="login-credentials">
+                        <strong>🔑 Credenciais padrão:</strong><br>
+                        E-mail: <strong>admin@facahub.com</strong><br>
+                        Senha: <strong>admin123</strong>
+                    </div>
+
+                    <div class="login-footer">
+                        Sistema utilizado pelo setor de Arte Finalização
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PÁGINA: REGISTRO ===== -->
+        <div class="page" id="page-register">
+            <div class="login-page">
+                <div class="login-card">
+                    <div class="logo">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <rect x="4" y="4" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M10 16L14 20L22 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>FacaHub</span>
+                    </div>
+                    <h1>Criar Conta</h1>
+                    <p>Cadastre-se para acessar o sistema</p>
+
+                    <form id="registerForm" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label for="regNome">Nome</label>
+                            <input type="text" id="regNome" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regEmail">E-mail</label>
+                            <input type="email" id="regEmail" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword">Senha (mínimo 6 caracteres)</label>
+                            <input type="password" id="regPassword" placeholder="••••••••" minlength="6" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regRole">Perfil</label>
+                            <select id="regRole">
+                                <option value="consulta">Consulta</option>
+                                <option value="arte-final">Arte Final</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                            <small style="color:var(--gray-400);font-size:0.7rem;">Apenas administradores podem criar outros administradores</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">📝 Cadastrar</button>
+                    </form>
+
+                    <div style="text-align:center;margin-top:16px;">
+                        <button class="btn btn-outline btn-sm" onclick="showLoginForm()">← Voltar para o login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PÁGINA: DASHBOARD ===== -->
+        <div class="page" id="page-dashboard">
+            <div class="page-header">
+                <div>
+                    <h1>📊 Dashboard</h1>
+                    <span class="subtitle">Visão geral da biblioteca</span>
+                </div>
+                <div class="flex flex-wrap gap-8">
+                    <button class="btn btn-primary" onclick="navigateTo('nova-faca')">+ Nova Faca</button>
+                    <button class="btn btn-outline" onclick="navigateTo('usuarios')">👥 Usuários</button>
+                </div>
+            </div>
+
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="number" id="statTotal">-</div>
+                    <div class="label">Total de Facas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number green" id="statAtivas">-</div>
+                    <div class="label">Ativas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number yellow" id="statRevisao">-</div>
+                    <div class="label">Em Revisão</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number red" id="statObsoletas">-</div>
+                    <div class="label">Obsoletas</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">🆕 Facas Recentes</div>
+                    <div class="card-body" id="recentesList">
+                        <div class="loading"><div class="loading-spinner"></div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">📝 Últimas Alterações</div>
+                    <div class="card-body" id="alteracoesList">
+                        <div class="loading"><div class="loading-spinner"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PÁGINA: BIBLIOTECA ===== -->
+        <div class="page" id="page-biblioteca">
+            <div class="page-header">
+                <div>
+                    <h1>📚 Biblioteca</h1>
+                    <span class="subtitle" id="bibliotecaSubtitle">Gerencie todas as facas</span>
+                </div>
+                <button class="btn btn-primary" onclick="navigateTo('nova-faca')">+ Nova Faca</button>
+            </div>
+
+            <div class="search-section">
+                <div class="search-main">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Buscar por código, nome, produto, cliente, material..." 
+                            oninput="handleSearchInput()"
+                            autocomplete="off"
+                        >
+                        <button class="clear-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
+                    </div>
+                    <button class="btn-search" onclick="performSearch()">
+                        Buscar
+                    </button>
+                </div>
+
+                <div class="search-filters">
+                    <span class="filter-label">Filtros:</span>
+                    <select id="filterStatus" onchange="applyFilters()">
+                        <option value="">Status</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="revisao">Em Revisão</option>
+                        <option value="inativo">Inativo</option>
+                    </select>
+                    <select id="filterCategoria" onchange="applyFilters()">
+                        <option value="">Categoria</option>
+                        <option value="Frasco">Frasco</option>
+                        <option value="Pote">Pote</option>
+                        <option value="Ampola">Ampola</option>
+                        <option value="Sachê">Sachê</option>
+                    </select>
+                    <select id="filterMaterial" onchange="applyFilters()">
+                        <option value="">Material</option>
+                        <option value="PET">PET</option>
+                        <option value="Vidro">Vidro</option>
+                        <option value="Plástico">Plástico</option>
+                        <option value="Metal">Metal</option>
+                    </select>
+                    <button class="btn btn-clear btn-sm" onclick="clearAllFilters()">Limpar filtros</button>
+                </div>
+
+                <div class="search-suggestions" id="searchSuggestions">
+                    <span style="font-size:0.75rem;color:var(--gray-400);">Sugestões:</span>
+                    <span class="suggestion" onclick="quickSearch('Frasco')">Frasco</span>
+                    <span class="suggestion" onclick="quickSearch('Pote')">Pote</span>
+                    <span class="suggestion" onclick="quickSearch('PET')">PET</span>
+                    <span class="suggestion" onclick="quickSearch('1L')">1L</span>
+                    <span class="suggestion" onclick="quickSearch('500ml')">500ml</span>
+                </div>
+
+                <div class="search-stats">
+                    <span class="result-count">
+                        <strong id="resultCount">0</strong> resultados encontrados
+                    </span>
+                    <div class="search-tags" id="searchTags"></div>
+                </div>
+            </div>
+
+            <div class="facas-grid" id="facasGrid">
+                <div class="loading"><div class="loading-spinner"></div></div>
+            </div>
+        </div>
+
+        <!-- ===== PÁGINA: NOVA FACA ===== -->
+        <div class="page" id="page-nova-faca">
+            <div class="page-header">
+                <div>
+                    <h1>➕ Nova Faca</h1>
+                    <span class="subtitle">Cadastre uma nova faca no sistema</span>
+                </div>
+                <button class="btn btn-outline" onclick="navigateTo('biblioteca')">← Voltar</button>
+            </div>
+
+            <form class="form-card" id="formNovaFaca" onsubmit="handleSaveFaca(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Código *</label>
+                        <input type="text" id="fCodigo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nome *</label>
+                        <input type="text" id="fNome" required placeholder="Nome da faca">
+                    </div>
+                    <div class="form-group">
+                        <label>Produto</label>
+                        <input type="text" id="fProduto" placeholder="Produto">
+                    </div>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <input type="text" id="fCliente" placeholder="Cliente">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <input type="text" id="fCategoria" placeholder="Ex: Frasco, Pote">
+                    </div>
+                    <div class="form-group">
+                        <label>Material</label>
+                        <input type="text" id="fMaterial" placeholder="Ex: PET, Vidro">
+                    </div>
+                    <div class="form-group">
+                        <label>Largura (mm) *</label>
+                        <input type="number" id="fLargura" step="0.1" required oninput="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Altura (mm) *</label>
+                        <input type="number" id="fAltura" step="0.1" required oninput="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Profundidade (mm)</label>
+                        <input type="number" id="fProfundidade" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Raio (mm)</label>
+                        <input type="number" id="fRaio" step="0.1" value="0" oninput="updatePreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Sangria (mm)</label>
+                        <input type="number" id="fSangria" step="0.1" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="fStatus">
+                            <option value="ativo">Ativo</option>
+                            <option value="revisao">Em Revisão</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Observações</label>
+                    <textarea id="fObservacoes" rows="2" placeholder="Observações adicionais"></textarea>
+                </div>
+
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Arquivo da Faca</label>
+                    <input type="file" id="fArquivo" accept=".pdf,.svg,.ai,.cdr,.eps,.png,.jpg,.jpeg">
+                    <small style="color:var(--gray-400);font-size:0.7rem;">PDF, SVG, AI, CDR, EPS, PNG, JPG</small>
+                </div>
+
+                <div class="form-title">📐 Visualização do Gabarito</div>
+                <div class="svg-preview-container" id="svgPreview">
+                    <svg viewBox="0 0 400 300">
+                        <rect width="400" height="300" fill="#f8fafc"/>
+                        <text x="200" y="155" text-anchor="middle" font-size="14" fill="#94a3b8">Aguardando dimensões</text>
+                    </svg>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Salvar Faca</button>
+                    <button type="reset" class="btn btn-outline" onclick="navigateTo('biblioteca')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ===== PÁGINA: DETALHES ===== -->
+        <div class="page" id="page-detalhes">
+            <div class="page-header">
+                <div>
+                    <h1 id="detalhesTitulo">Detalhes da Faca</h1>
+                    <span class="subtitle" id="detalhesCodigo"></span>
+                </div>
+                <div class="flex flex-wrap gap-8">
+                    <button class="btn btn-outline" onclick="navigateTo('biblioteca')">← Voltar</button>
+                    <button class="btn btn-primary" id="btnEditarFaca">✏️ Editar</button>
+                    <button class="btn btn-success" onclick="novaVersao()">+ Nova Versão</button>
+                </div>
+            </div>
+
+            <div class="detalhes-grid">
+                <div>
+                    <div class="card mb-16">
+                        <div class="card-header">📐 Gabarito</div>
+                        <div class="card-body">
+                            <div class="svg-preview-container" id="detalhesSVG"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">📋 Informações</div>
+                        <div class="card-body" id="detalhesInfo">
+                            <div class="loading"><div class="loading-spinner"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card mb-16">
+                        <div class="card-header">📂 Arquivos</div>
+                        <div class="card-body" id="detalhesArquivos">
+                            <div class="loading"><div class="loading-spinner"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">📜 Versões</div>
+                        <div class="card-body">
+                            <div class="versoes-list" id="detalhesVersoes">
+                                <div class="loading"><div class="loading-spinner"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PÁGINA: EDITAR ===== -->
+        <div class="page" id="page-editar">
+            <div class="page-header">
+                <div>
+                    <h1>✏️ Editar Faca</h1>
+                    <span class="subtitle" id="editarCodigo"></span>
+                </div>
+                <button class="btn btn-outline" onclick="navigateTo('biblioteca')">← Voltar</button>
+            </div>
+
+            <form class="form-card" id="formEditarFaca" onsubmit="handleUpdateFaca(event)">
+                <input type="hidden" id="eId">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Código</label>
+                        <input type="text" id="eCodigo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" id="eNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Produto</label>
+                        <input type="text" id="eProduto">
+                    </div>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <input type="text" id="eCliente">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <input type="text" id="eCategoria">
+                    </div>
+                    <div class="form-group">
+                        <label>Material</label>
+                        <input type="text" id="eMaterial">
+                    </div>
+                    <div class="form-group">
+                        <label>Largura (mm)</label>
+                        <input type="number" id="eLargura" step="0.1" required oninput="updatePreviewEdit()">
+                    </div>
+                    <div class="form-group">
+                        <label>Altura (mm)</label>
+                        <input type="number" id="eAltura" step="0.1" required oninput="updatePreviewEdit()">
+                    </div>
+                    <div class="form-group">
+                        <label>Profundidade (mm)</label>
+                        <input type="number" id="eProfundidade" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Raio (mm)</label>
+                        <input type="number" id="eRaio" step="0.1" value="0" oninput="updatePreviewEdit()">
+                    </div>
+                    <div class="form-group">
+                        <label>Sangria (mm)</label>
+                        <input type="number" id="eSangria" step="0.1" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="eStatus">
+                            <option value="ativo">Ativo</option>
+                            <option value="revisao">Em Revisão</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Observações</label>
+                    <textarea id="eObservacoes" rows="2"></textarea>
+                </div>
+
+                <div class="form-title">📐 Visualização do Gabarito</div>
+                <div class="svg-preview-container" id="svgPreviewEdit">
+                    <svg viewBox="0 0 400 300">
+                        <rect width="400" height="300" fill="#f8fafc"/>
+                        <text x="200" y="155" text-anchor="middle" font-size="14" fill="#94a3b8">Aguardando dimensões</text>
+                    </svg>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Atualizar</button>
+                    <button type="button" class="btn btn-danger" onclick="handleDeleteFaca()">🗑️ Inativar</button>
+                    <button type="reset" class="btn btn-outline" onclick="navigateTo('biblioteca')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ===== PÁGINA: USUÁRIOS ===== -->
+        <div class="page" id="page-usuarios">
+            <div class="page-header">
+                <div>
+                    <h1>👥 Gerenciar Usuários</h1>
+                    <span class="subtitle">Gerencie os usuários do sistema</span>
+                </div>
+                <div class="flex flex-wrap gap-8">
+                    <button class="btn btn-primary" onclick="showRegisterForm()">+ Novo Usuário</button>
+                    <button class="btn btn-outline" onclick="navigateTo('dashboard')">← Voltar</button>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('usuarios-lista')">📋 Lista de Usuários</button>
+                <button class="tab" onclick="switchTab('usuarios-novo')">➕ Novo Usuário</button>
+            </div>
+
+            <div id="tab-usuarios-lista" class="tab-content active">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="users-grid" id="usersList">
+                            <div class="loading"><div class="loading-spinner"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-usuarios-novo" class="tab-content">
+                <form class="form-card" onsubmit="handleCreateUser(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nome *</label>
+                            <input type="text" id="uNome" required placeholder="Nome do usuário">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail *</label>
+                            <input type="email" id="uEmail" required placeholder="usuario@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Senha *</label>
+                            <input type="password" id="uPassword" required minlength="6" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>Perfil</label>
+                            <select id="uRole">
+                                <option value="consulta">Consulta</option>
+                                <option value="arte-final">Arte Final</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">📝 Criar Usuário</button>
+                        <button type="reset" class="btn btn-outline" onclick="switchTab('usuarios-lista')">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ============================================
+        // CONFIGURAÇÃO DO SUPABASE
+        // ============================================
+        // 🔴 SUBSTITUA PELAS SUAS CREDENCIAIS 🔴
+        const SUPABASE_URL = 'https://seu-projeto.supabase.co';
+        const SUPABASE_ANON_KEY = 'sua-chave-anon-aqui';
+        // ============================================
+
+        // ============================================
+        // BANCO DE DADOS LOCAL (Usuários)
+        // ============================================
+        const DB = {
+            users: [{
+                id: '1',
+                nome: 'Administrador',
+                email: 'admin@facahub.com',
+                password: 'admin123',
+                role: 'admin',
+                created_at: new Date().toISOString()
+            }]
+        };
+
+        let nextUserId = 2;
+
+        // ============================================
+        // SUPABASE CLIENT
+        // ============================================
+        let supabaseClient = null;
+        let supabaseConnected = false;
+
+        function initSupabase() {
+            try {
+                if (typeof supabase !== 'undefined') {
+                    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    supabaseConnected = true;
+                    updateDbStatus(true);
+                    console.log('✅ Supabase conectado!');
+                } else {
+                    console.warn('⚠️ Supabase não carregado. Usando dados locais.');
+                    supabaseConnected = false;
+                    updateDbStatus(false);
+                }
+            } catch (e) {
+                console.warn('⚠️ Erro ao conectar Supabase:', e);
+                supabaseConnected = false;
+                updateDbStatus(false);
+            }
+        }
+
+        function updateDbStatus(connected) {
+            const el = document.getElementById('dbStatus');
+            const text = document.getElementById('dbStatusText');
+            if (connected) {
+                el.className = 'db-status online';
+                text.textContent = 'Supabase Online';
+            } else {
+                el.className = 'db-status offline';
+                text.textContent = 'Modo Local';
+            }
+        }
+
+        // ============================================
+        // FUNÇÕES SUPABASE - FACAS
+        // ============================================
+        async function supabaseGetFacas() {
+            if (!supabaseClient || !supabaseConnected) {
+                return { data: [], error: null, local: true };
+            }
+            try {
+                const { data, error } = await supabaseClient
+                    .from('facas')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                return { data: data || [], error, local: false };
+            } catch (e) {
+                return { data: [], error: e, local: true };
+            }
+        }
+
+        async function supabaseCreateFaca(dados) {
+            if (!supabaseClient || !supabaseConnected) {
+                return { data: null, error: 'Supabase offline', local: true };
+            }
+            try {
+                const { data, error } = await supabaseClient
+                    .from('facas')
+                    .insert([dados])
+                    .select()
+                    .single();
+                return { data, error, local: false };
+            } catch (e) {
+                return { data: null, error: e, local: true };
+            }
+        }
+
+        async function supabaseUpdateFaca(id, dados) {
+            if (!supabaseClient || !supabaseConnected) {
+                return { data: null, error: 'Supabase offline', local: true };
+            }
+            try {
+                const { data, error } = await supabaseClient
+                    .from('facas')
+                    .update(dados)
+                    .eq('id', id)
+                    .select()
+                    .single();
+                return { data, error, local: false };
+            } catch (e) {
+                return { data: null, error: e, local: true };
+            }
+        }
+
+        async function supabaseDeleteFaca(id) {
+            if (!supabaseClient || !supabaseConnected) {
+                return { error: 'Supabase offline', local: true };
+            }
+            try {
+                const { error } = await supabaseClient
+                    .from('facas')
+                    .update({ status: 'inativo' })
+                    .eq('id', id);
+                return { error, local: false };
+            } catch (e) {
+                return { error: e, local: true };
+            }
+        }
+
+        // ============================================
+        // CACHE LOCAL DE FACAS (fallback)
+        // ============================================
+        let localFacas = [];
+        let localVersoes = [];
+
+        // Dados iniciais locais
+        function initLocalData() {
+            localFacas = [{
+                id: '1',
+                codigo: 'FD2401',
+                nome: 'Frasco Orquídea 1L',
+                produto: 'Shampoo Orquídea',
+                cliente: 'Orquídea Cosméticos',
+                categoria: 'Frasco',
+                material: 'PET',
+                largura: 223,
+                altura: 260,
+                profundidade: null,
+                raio: 5,
+                sangria: 3,
+                status: 'ativo',
+                observacoes: 'Faca principal do produto Shampoo Orquídea 1L',
+                versao_atual: 2,
+                created_at: new Date(Date.now() - 86400000 * 10).toISOString()
+            }, {
+                id: '2',
+                codigo: 'FD2402',
+                nome: 'Pote Class 1Kg',
+                produto: 'Creme Hidratante',
+                cliente: 'Class Beauty',
+                categoria: 'Pote',
+                material: 'PET',
+                largura: 349,
+                altura: 122,
+                profundidade: null,
+                raio: 8,
+                sangria: 3,
+                status: 'ativo',
+                observacoes: 'Pote para cremes hidratantes',
+                versao_atual: 1,
+                created_at: new Date(Date.now() - 86400000 * 15).toISOString()
+            }, {
+                id: '3',
+                codigo: 'FD2403',
+                nome: 'Frasco Tulipa 500ml',
+                produto: 'Condicionador Tulipa',
+                cliente: 'Tulipa Hair',
+                categoria: 'Frasco',
+                material: 'PET',
+                largura: 195,
+                altura: 162,
+                profundidade: null,
+                raio: 10,
+                sangria: 3,
+                status: 'revisao',
+                observacoes: 'Em revisão para novo molde',
+                versao_atual: 3,
+                created_at: new Date(Date.now() - 86400000 * 5).toISOString()
+            }, {
+                id: '4',
+                codigo: 'FD2404',
+                nome: 'Frasco Jupiter 1L',
+                produto: 'Loção Corporal',
+                cliente: 'Jupiter Beauty',
+                categoria: 'Frasco',
+                material: 'Vidro',
+                largura: 260,
+                altura: 193,
+                profundidade: null,
+                raio: 0,
+                sangria: 3,
+                status: 'inativo',
+                observacoes: 'Modelo descontinuado',
+                versao_atual: 1,
+                created_at: new Date(Date.now() - 86400000 * 30).toISOString()
+            }, {
+                id: '5',
+                codigo: 'FD2405',
+                nome: 'Pote Zandei 500gr',
+                produto: 'Manteiga Corporal',
+                cliente: 'Zandei',
+                categoria: 'Pote',
+                material: 'Plástico',
+                largura: 314,
+                altura: 65,
+                profundidade: null,
+                raio: 12,
+                sangria: 3,
+                status: 'ativo',
+                observacoes: 'Pote para manteiga corporal',
+                versao_atual: 2,
+                created_at: new Date(Date.now() - 86400000 * 20).toISOString()
+            }];
+
+            localVersoes = [
+                { id: 'v1', faca_id: '1', numero: 1, largura: 220, altura: 260, motivo: 'Versão inicial',
+                    created_at: new Date(Date.now() - 86400000 * 30).toISOString() },
+                { id: 'v2', faca_id: '1', numero: 2, largura: 223, altura: 260, motivo: 'Ajuste de largura',
+                    created_at: new Date(Date.now() - 86400000 * 10).toISOString() },
+                { id: 'v3', faca_id: '3', numero: 1, largura: 190, altura: 160, motivo: 'Versão inicial',
+                    created_at: new Date(Date.now() - 86400000 * 20).toISOString() },
+                { id: 'v4', faca_id: '3', numero: 2, largura: 192, altura: 161, motivo: 'Ajuste pequeno',
+                    created_at: new Date(Date.now() - 86400000 * 15).toISOString() },
+                { id: 'v5', faca_id: '3', numero: 3, largura: 195, altura: 162, motivo: 'Novo molde do fornecedor',
+                    created_at: new Date(Date.now() - 86400000 * 5).toISOString() },
+                { id: 'v6', faca_id: '5', numero: 1, largura: 310, altura: 63, motivo: 'Versão inicial',
+                    created_at: new Date(Date.now() - 86400000 * 25).toISOString() },
+                { id: 'v7', faca_id: '5', numero: 2, largura: 314, altura: 65, motivo: 'Ajuste de medidas',
+                    created_at: new Date(Date.now() - 86400000 * 10).toISOString() }
+            ];
+
+            let lastId = 5;
+            let lastVersaoId = 7;
+
+            // Funções para manipular dados locais
+            window.getLocalFacas = () => [...localFacas];
+            window.getLocalVersoes = (facaId) => localVersoes.filter(v => v.faca_id === facaId);
+            window.addLocalFaca = (dados) => {
+                dados.id = String(++lastId);
+                localFacas.push(dados);
+                return dados;
+            };
+            window.addLocalVersao = (dados) => {
+                dados.id = 'v' + (++lastVersaoId);
+                localVersoes.push(dados);
+                return dados;
+            };
+            window.updateLocalFaca = (id, dados) => {
+                const idx = localFacas.findIndex(f => f.id === id);
+                if (idx >= 0) {
+                    localFacas[idx] = { ...localFacas[idx], ...dados };
+                    return localFacas[idx];
+                }
+                return null;
+            };
+        }
+
+        // ============================================
+        // ESTADO GLOBAL
+        // ============================================
+        let currentUser = null;
+        let currentFacaId = null;
+        let searchTimeout = null;
+        let currentSearchTerm = '';
+        let activeFilters = {};
+        let facasData = [];
+        let isLoading = false;
+
+        // ============================================
+        // UTILITÁRIOS
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            const d = new Date(date);
+            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        function formatDateFull(date) {
+            if (!date) return '-';
+            const d = new Date(date);
+            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit',
+                    minute: '2-digit' });
+        }
+
+        function generateCode() {
+            const d = new Date();
+            const random = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+            return `FD${String(d.getFullYear()).slice(-2)}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}${random}`;
+        }
+
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performSearch, 300);
+        }
+
+        function getRoleLabel(role) {
+            const map = {
+                'admin': 'Administrador',
+                'arte-final': 'Arte Final',
+                'consulta': 'Consulta'
+            };
+            return map[role] || role;
+        }
+
+        function getRoleBadge(role) {
+            return `<span class="badge badge-${role}">${getRoleLabel(role)}</span>`;
+        }
+
+        function navigateTo(page, params = null) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            const target = document.getElementById(`page-${page}`);
+            if (target) target.classList.add('active');
+
+            document.getElementById('mainHeader').style.display = currentUser ? 'flex' : 'none';
+
+            if (page === 'dashboard') loadDashboard();
+            if (page === 'biblioteca') {
+                if (!document.getElementById('searchInput').value) {
+                    loadFacas();
+                } else {
+                    performSearch();
+                }
+            }
+            if (page === 'nova-faca') {
+                document.getElementById('fCodigo').value = generateCode();
+                updatePreview();
+            }
+            if (page === 'detalhes' && params) {
+                currentFacaId = params;
+                loadDetalhes(params);
+            }
+            if (page === 'editar' && params) {
+                currentFacaId = params;
+                loadEditar(params);
+            }
+            if (page === 'usuarios') loadUsers();
+        }
+
+        // ============================================
+        // AUTENTICAÇÃO
+        // ============================================
+        function showLoginForm() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-login').classList.add('active');
+            document.getElementById('mainHeader').style.display = 'none';
+        }
+
+        function showRegisterForm() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-register').classList.add('active');
+            document.getElementById('mainHeader').style.display = 'none';
+            if (currentUser) {
+                const roleSelect = document.getElementById('regRole');
+                if (currentUser.role !== 'admin') {
+                    roleSelect.value = 'consulta';
+                    roleSelect.querySelector('option[value="admin"]').disabled = true;
+                }
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!email || !password) {
+                showToast('Preencha todos os campos', 'error');
+                return;
+            }
+
+            const user = DB.users.find(u => u.email === email && u.password === password);
+
+            if (!user) {
+                showToast('E-mail ou senha incorretos', 'error');
+                return;
+            }
+
+            currentUser = user;
+            document.getElementById('userName').textContent = user.nome || user.email;
+            document.getElementById('userAvatar').textContent = user.nome ? user.nome[0].toUpperCase() : 'U';
+            document.getElementById('userRole').textContent = getRoleLabel(user.role);
+
+            showToast(`Bem-vindo, ${user.nome || user.email}!`, 'success');
+            navigateTo('dashboard');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const nome = document.getElementById('regNome').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const role = document.getElementById('regRole').value;
+
+            if (!nome || !email || !password) {
+                showToast('Preencha todos os campos', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast('A senha deve ter no mínimo 6 caracteres', 'error');
+                return;
+            }
+
+            if (DB.users.find(u => u.email === email)) {
+                showToast('Este e-mail já está cadastrado', 'error');
+                return;
+            }
+
+            if (role === 'admin' && (!currentUser || currentUser.role !== 'admin')) {
+                showToast('Apenas administradores podem criar outros administradores', 'error');
+                return;
+            }
+
+            const newUser = {
+                id: String(nextUserId++),
+                nome,
+                email,
+                password,
+                role,
+                created_at: new Date().toISOString()
+            };
+
+            DB.users.push(newUser);
+            showToast(`Usuário ${nome} criado com sucesso!`, 'success');
+
+            if (!currentUser) {
+                currentUser = newUser;
+                document.getElementById('userName').textContent = newUser.nome;
+                document.getElementById('userAvatar').textContent = newUser.nome[0].toUpperCase();
+                document.getElementById('userRole').textContent = getRoleLabel(newUser.role);
+                navigateTo('dashboard');
+            } else {
+                navigateTo('usuarios');
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            showToast('Logout realizado', 'info');
+            showLoginForm();
+        }
+
+        // ============================================
+        // GERADOR DE SVG
+        // ============================================
+        function generateSVG(largura, altura, raio = 0) {
+            const viewW = 400;
+            const viewH = 300;
+            const pad = 50;
+
+            const maxDim = Math.max(largura || 1, altura || 1);
+            const scale = Math.min(
+                (viewW - pad * 2) / (largura || 1),
+                (viewH - pad * 2) / (altura || 1)
+            ) * 0.85;
+
+            const w = (largura || 100) * scale;
+            const h = (altura || 100) * scale;
+            const x = (viewW - w) / 2;
+            const y = (viewH - h) / 2;
+            const r = Math.min(raio * scale * 0.5, w / 2, h / 2);
+
+            const rect = r > 0 && r < Math.min(w, h) / 2 ?
+                `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" ry="${r}" fill="#e8f5ed" stroke="#1a7a4c" stroke-width="2"/>` :
+                `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#e8f5ed" stroke="#1a7a4c" stroke-width="2"/>`;
+
+            return `
+                <svg viewBox="0 0 ${viewW} ${viewH}" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrS" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+                            <polygon points="8 0, 8 6, 0 3" fill="#64748b"/>
+                        </marker>
+                        <marker id="arrE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                            <polygon points="0 0, 0 6, 8 3" fill="#64748b"/>
+                        </marker>
+                    </defs>
+                    <rect width="${viewW}" height="${viewH}" fill="white"/>
+                    ${rect}
+                    ${largura ? `
+                        <line x1="${x}" y1="${y + h + 20}" x2="${x + w}" y2="${y + h + 20}" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrS)" marker-end="url(#arrE)"/>
+                        <text x="${x + w/2}" y="${y + h + 36}" text-anchor="middle" font-size="11" fill="#475569" font-weight="500">${largura} mm</text>
+                    ` : ''}
+                    ${altura ? `
+                        <line x1="${x - 20}" y1="${y}" x2="${x - 20}" y2="${y + h}" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrS)" marker-end="url(#arrE)"/>
+                        <text x="${x - 28}" y="${y + h/2}" text-anchor="middle" font-size="11" fill="#475569" font-weight="500" transform="rotate(-90, ${x - 28}, ${y + h/2})">${altura} mm</text>
+                    ` : ''}
+                    ${raio > 0 ? `<text x="${x + w + 12}" y="${y + 20}" font-size="9" fill="#94a3b8">Raio: ${raio} mm</text>` : ''}
+                </svg>
+            `;
+        }
+
+        function updatePreview() {
+            const w = parseFloat(document.getElementById('fLargura').value) || 0;
+            const h = parseFloat(document.getElementById('fAltura').value) || 0;
+            const r = parseFloat(document.getElementById('fRaio').value) || 0;
+            const container = document.getElementById('svgPreview');
+            if (w > 0 && h > 0) {
+                container.innerHTML = generateSVG(w, h, r);
+            } else {
+                container.innerHTML =
+                    `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f8fafc"/><text x="200" y="155" text-anchor="middle" font-size="14" fill="#94a3b8">Aguardando dimensões</text></svg>`;
+            }
+        }
+
+        function updatePreviewEdit() {
+            const w = parseFloat(document.getElementById('eLargura').value) || 0;
+            const h = parseFloat(document.getElementById('eAltura').value) || 0;
+            const r = parseFloat(document.getElementById('eRaio').value) || 0;
+            const container = document.getElementById('svgPreviewEdit');
+            if (w > 0 && h > 0) {
+                container.innerHTML = generateSVG(w, h, r);
+            } else {
+                container.innerHTML =
+                    `<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#f8fafc"/><text x="200" y="155" text-anchor="middle" font-size="14" fill="#94a3b8">Aguardando dimensões</text></svg>`;
+            }
+        }
+
+        // ============================================
+        // BUSCA
+        // ============================================
+        function handleSearchInput() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+
+            if (input.value.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+
+            debounceSearch();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.remove('visible');
+            currentSearchTerm = '';
+            performSearch();
+            document.getElementById('searchInput').focus();
+        }
+
+        function performSearch() {
+            currentSearchTerm = document.getElementById('searchInput').value.trim();
+            applyFilters();
+        }
+
+        function applyFilters() {
+            activeFilters = {
+                status: document.getElementById('filterStatus').value,
+                categoria: document.getElementById('filterCategoria').value,
+                material: document.getElementById('filterMaterial').value
+            };
+            loadFacas();
+        }
+
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.remove('visible');
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterCategoria').value = '';
+            document.getElementById('filterMaterial').value = '';
+            currentSearchTerm = '';
+            activeFilters = {};
+            loadFacas();
+            document.getElementById('searchInput').focus();
+        }
+
+        function quickSearch(term) {
+            document.getElementById('searchInput').value = term;
+            currentSearchTerm = term;
+            performSearch();
+            document.getElementById('searchInput').focus();
+        }
+
+        function updateSearchTags() {
+            const container = document.getElementById('searchTags');
+            const tags = [];
+
+            if (currentSearchTerm) {
+                tags.push(
+                    `<span class="search-tag">🔍 ${currentSearchTerm} <span class="remove-tag" onclick="clearSearch()">✕</span></span>`
+                    );
+            }
+
+            if (activeFilters.status) {
+                const label = activeFilters.status === 'ativo' ? 'Ativo' :
+                    activeFilters.status === 'revisao' ? 'Em Revisão' : 'Inativo';
+                tags.push(
+                    `<span class="search-tag">📌 ${label} <span class="remove-tag" onclick="document.getElementById('filterStatus').value='';applyFilters()">✕</span></span>`
+                    );
+            }
+
+            if (activeFilters.categoria) {
+                tags.push(
+                    `<span class="search-tag">📁 ${activeFilters.categoria} <span class="remove-tag" onclick="document.getElementById('filterCategoria').value='';applyFilters()">✕</span></span>`
+                    );
+            }
+
+            if (activeFilters.material) {
+                tags.push(
+                    `<span class="search-tag">🧪 ${activeFilters.material} <span class="remove-tag" onclick="document.getElementById('filterMaterial').value='';applyFilters()">✕</span></span>`
+                    );
+            }
+
+            container.innerHTML = tags.join('');
+        }
+
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        function loadDashboard() {
+            const facas = facasData.length > 0 ? facasData : window.getLocalFacas();
+
+            document.getElementById('statTotal').textContent = facas.length;
+            document.getElementById('statAtivas').textContent = facas.filter(f => f.status === 'ativo').length;
+            document.getElementById('statRevisao').textContent = facas.filter(f => f.status === 'revisao').length;
+            document.getElementById('statObsoletas').textContent = facas.filter(f => f.status === 'inativo').length;
+
+            const recentes = document.getElementById('recentesList');
+            const recentesData = [...facas].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
+
+            if (recentesData.length === 0) {
+                recentes.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Nenhuma faca cadastrada</p></div>';
+            } else {
+                recentes.innerHTML = recentesData.map(f =>
+                    `<div class="list-item" onclick="navigateTo('detalhes', '${f.id}')">
+                            <div><div class="title">${f.codigo} - ${f.nome}</div><div class="subtitle">${f.produto || '-'}</div></div>
+                            <span class="date">${formatDate(f.created_at)}</span>
+                        </div>`
+                ).join('');
+            }
+
+            const alteracoes = document.getElementById('alteracoesList');
+            const alteracoesData = [];
+            if (facas.length > 0) {
+                const ultimaFaca = facas[0];
+                alteracoesData.push({
+                    acao: 'Nova Versão',
+                    descricao: `v${ultimaFaca.versao_atual} criada para ${ultimaFaca.nome}`,
+                    date: new Date(Date.now() - 3600000 * 2).toISOString()
+                });
+                if (facas.length > 1) {
+                    alteracoesData.push({
+                        acao: 'Edição',
+                        descricao: `Medidas atualizadas do ${facas[1].nome}`,
+                        date: new Date(Date.now() - 86400000 * 2).toISOString()
+                    });
+                }
+                if (facas.length > 2) {
+                    alteracoesData.push({
+                        acao: 'Cadastro',
+                        descricao: `${facas[2].nome} cadastrada no sistema`,
+                        date: new Date(Date.now() - 86400000 * 5).toISOString()
+                    });
+                }
+            }
+
+            if (alteracoesData.length === 0) {
+                alteracoes.innerHTML = '<div class="empty-state"><div class="icon">📝</div><p>Nenhuma alteração registrada</p></div>';
+            } else {
+                alteracoes.innerHTML = alteracoesData.map(a =>
+                    `<div class="list-item"><div><div class="title">${a.acao}</div><div class="subtitle">${a.descricao}</div></div><span class="date">${formatDate(a.date)}</span></div>`
+                ).join('');
+            }
+        }
+
+        // ============================================
+        // BIBLIOTECA
+        // ============================================
+        async function loadFacas() {
+            const grid = document.getElementById('facasGrid');
+            grid.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+
+            try {
+                // Tentar buscar do Supabase
+                let result = await supabaseGetFacas();
+
+                if (result.data && result.data.length > 0) {
+                    facasData = result.data;
+                } else {
+                    facasData = window.getLocalFacas();
+                    if (!result.local) {
+                        showToast('Nenhuma faca no Supabase. Usando dados locais.', 'info');
+                    }
+                }
+
+                // Aplicar busca e filtros
+                let filtered = [...facasData];
+                const search = currentSearchTerm.toLowerCase();
+
+                if (search) {
+                    filtered = filtered.filter(f =>
+                        f.codigo.toLowerCase().includes(search) ||
+                        f.nome.toLowerCase().includes(search) ||
+                        (f.produto && f.produto.toLowerCase().includes(search)) ||
+                        (f.cliente && f.cliente.toLowerCase().includes(search)) ||
+                        (f.categoria && f.categoria.toLowerCase().includes(search)) ||
+                        (f.material && f.material.toLowerCase().includes(search)) ||
+                        (f.observacoes && f.observacoes.toLowerCase().includes(search))
+                    );
+                }
+
+                if (activeFilters.status) {
+                    filtered = filtered.filter(f => f.status === activeFilters.status);
+                }
+                if (activeFilters.categoria) {
+                    filtered = filtered.filter(f => f.categoria === activeFilters.categoria);
+                }
+                if (activeFilters.material) {
+                    filtered = filtered.filter(f => f.material === activeFilters.material);
+                }
+
+                document.getElementById('resultCount').textContent = filtered.length;
+                document.getElementById('bibliotecaSubtitle').textContent =
+                    filtered.length === 0 ? 'Nenhum resultado encontrado' :
+                    `Mostrando ${filtered.length} faca${filtered.length > 1 ? 's' : ''}`;
+
+                updateSearchTags();
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                            <div class="empty-state" style="grid-column:1/-1;">
+                                <div class="icon">🔍</div>
+                                <h3>Nenhuma faca encontrada</h3>
+                                <p>Tente ajustar os termos de busca ou filtros</p>
+                                <button class="btn btn-outline btn-sm mt-8" onclick="clearAllFilters()">Limpar filtros</button>
+                            </div>
+                        `;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(f => {
+                    const versoes = window.getLocalVersoes(f.id);
+                    const versaoCount = versoes.length || 1;
+                    return `
+                            <div class="faca-card" onclick="navigateTo('detalhes', '${f.id}')">
+                                <div class="faca-preview">
+                                    ${generateSVG(f.largura || 100, f.altura || 100)}
+                                </div>
+                                <div class="faca-info">
+                                    <div class="faca-code">${f.codigo}</div>
+                                    <div class="faca-name">${f.nome}</div>
+                                    <div class="faca-details">${f.produto || '-'}</div>
+                                    <div class="faca-dimensions">${f.largura || '?'} × ${f.altura || '?'} mm</div>
+                                    <div class="faca-footer">
+                                        <span class="badge badge-${f.status}">${f.status}</span>
+                                        <span class="faca-version">v${f.versao_atual || 1}</span>
+                                        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();navigateTo('detalhes','${f.id}')">Abrir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                }).join('');
+
+                if (search) {
+                    grid.querySelectorAll('.faca-name, .faca-details, .faca-code').forEach(el => {
+                        const text = el.textContent;
+                        const regex = new RegExp(`(${search})`, 'gi');
+                        if (text.toLowerCase().includes(search)) {
+                            el.innerHTML = text.replace(regex,
+                                '<mark style="background:#fef9c3;padding:0 2px;border-radius:2px;">$1</mark>');
+                        }
+                    });
+                }
+
+            } catch (error) {
+                console.error('Erro ao carregar facas:', error);
+                grid.innerHTML =
+                    `<div class="empty-state" style="grid-column:1/-1;"><div class="icon">⚠️</div><h3>Erro ao carregar</h3><p>${error.message}</p></div>`;
+            }
+        }
+
+        // ============================================
+        // SALVAR FACA (COM SUPABASE)
+        // ============================================
+        async function handleSaveFaca(event) {
+            event.preventDefault();
+
+            const dados = {
+                codigo: document.getElementById('fCodigo').value.trim(),
+                nome: document.getElementById('fNome').value.trim(),
+                produto: document.getElementById('fProduto').value.trim(),
+                cliente: document.getElementById('fCliente').value.trim(),
+                categoria: document.getElementById('fCategoria').value.trim(),
+                material: document.getElementById('fMaterial').value.trim(),
+                largura: parseFloat(document.getElementById('fLargura').value) || 0,
+                altura: parseFloat(document.getElementById('fAltura').value) || 0,
+                profundidade: parseFloat(document.getElementById('fProfundidade').value) || null,
+                raio: parseFloat(document.getElementById('fRaio').value) || 0,
+                sangria: parseFloat(document.getElementById('fSangria').value) || 3,
+                status: document.getElementById('fStatus').value,
+                observacoes: document.getElementById('fObservacoes').value.trim(),
+                versao_atual: 1,
+                created_at: new Date().toISOString()
+            };
+
+            if (!dados.codigo || !dados.nome || !dados.largura || !dados.altura) {
+                showToast('Preencha os campos obrigatórios', 'error');
+                return;
+            }
+
+            try {
+                let savedData;
+
+                // Tentar salvar no Supabase
+                if (supabaseConnected) {
+                    const result = await supabaseCreateFaca(dados);
+                    if (result.data && !result.error) {
+                        savedData = result.data;
+                        showToast('Faca salva no Supabase com sucesso!', 'success');
+                    } else {
+                        // Fallback para local
+                        savedData = window.addLocalFaca(dados);
+                        showToast('Supabase offline. Salvo localmente.', 'warning');
+                    }
+                } else {
+                    savedData = window.addLocalFaca(dados);
+                    showToast('Modo local. Faca salva apenas no navegador.', 'info');
+                }
+
+                // Criar versão inicial localmente
+                window.addLocalVersao({
+                    faca_id: savedData.id,
+                    numero: 1,
+                    largura: dados.largura,
+                    altura: dados.altura,
+                    motivo: 'Versão inicial',
+                    created_at: new Date().toISOString()
+                });
+
+                // Atualizar dados locais
+                facasData = window.getLocalFacas();
+
+                setTimeout(() => navigateTo('biblioteca'), 500);
+
+            } catch (error) {
+                console.error('Erro ao salvar:', error);
+                showToast('Erro ao salvar: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================
+        // DETALHES
+        // ============================================
+        function loadDetalhes(id) {
+            const faca = facasData.find(f => f.id === id) || window.getLocalFacas().find(f => f.id === id);
+
+            if (!faca) {
+                showToast('Faca não encontrada', 'error');
+                navigateTo('biblioteca');
+                return;
+            }
+
+            document.getElementById('detalhesTitulo').textContent = faca.nome;
+            document.getElementById('detalhesCodigo').textContent = faca.codigo;
+
+            document.getElementById('detalhesSVG').innerHTML = generateSVG(faca.largura, faca.altura, faca.raio);
+
+            const info = document.getElementById('detalhesInfo');
+            const fields = [
+                ['Código', faca.codigo],
+                ['Produto', faca.produto || '-'],
+                ['Cliente', faca.cliente || '-'],
+                ['Categoria', faca.categoria || '-'],
+                ['Material', faca.material || '-'],
+                ['Largura', `${faca.largura} mm`],
+                ['Altura', `${faca.altura} mm`],
+                ['Profundidade', faca.profundidade ? `${faca.profundidade} mm` : '-'],
+                ['Raio', `${faca.raio} mm`],
+                ['Sangria', `${faca.sangria} mm`],
+                ['Status', `<span class="badge badge-${faca.status}">${faca.status}</span>`],
+                ['Versão Atual', `v${faca.versao_atual || 1}`],
+                ['Cadastrado', formatDateFull(faca.created_at)]
+            ];
+            info.innerHTML = fields.map(([label, value]) =>
+                `<div class="info-row"><span class="label">${label}</span><span class="value">${value}</span></div>`
+            ).join('');
+
+            const arquivos = document.getElementById('detalhesArquivos');
+            arquivos.innerHTML = `
+                    <div class="empty-state" style="padding:20px;">
+                        <div class="icon">📄</div>
+                        <p>Nenhum arquivo anexado</p>
+                        <button class="btn btn-primary btn-sm mt-8" onclick="showToast('Função em desenvolvimento')">+ Anexar</button>
+                    </div>
+                `;
+
+            const versoes = document.getElementById('detalhesVersoes');
+            const versoesData = window.getLocalVersoes(id).sort((a, b) => b.numero - a.numero);
+
+            if (versoesData.length === 0) {
+                versoes.innerHTML = '<div class="empty-state"><p>Nenhuma versão registrada</p></div>';
+            } else {
+                versoes.innerHTML = versoesData.map(v =>
+                    `<div class="versao-item ${v.numero === faca.versao_atual ? 'active' : ''}">
+                            <div class="versao-header">
+                                <span class="versao-num">Versão ${v.numero} ${v.numero === faca.versao_atual ? '⭐ (Atual)' : ''}</span>
+                                <span class="versao-dims">${v.largura} × ${v.altura} mm</span>
+                            </div>
+                            <div style="font-size:0.8rem;color:var(--gray-500);margin-top:4px;">
+                                ${v.motivo || 'Sem motivo'} • ${formatDateFull(v.created_at)}
+                                ${v.numero !== faca.versao_atual ? `<button class="btn btn-outline btn-sm" style="margin-left:8px;" onclick="recuperarVersao('${faca.id}','${v.numero}')">↩️ Recuperar</button>` : ''}
+                            </div>
+                        </div>`
+                ).join('');
+            }
+
+            document.getElementById('btnEditarFaca').onclick = () => navigateTo('editar', id);
+        }
+
+        // ============================================
+        // EDITAR FACA
+        // ============================================
+        function loadEditar(id) {
+            const faca = facasData.find(f => f.id === id) || window.getLocalFacas().find(f => f.id === id);
+
+            if (!faca) {
+                showToast('Faca não encontrada', 'error');
+                navigateTo('biblioteca');
+                return;
+            }
+
+            document.getElementById('editarCodigo').textContent = faca.codigo;
+            document.getElementById('eId').value = faca.id;
+            document.getElementById('eCodigo').value = faca.codigo;
+            document.getElementById('eNome').value = faca.nome;
+            document.getElementById('eProduto').value = faca.produto || '';
+            document.getElementById('eCliente').value = faca.cliente || '';
+            document.getElementById('eCategoria').value = faca.categoria || '';
+            document.getElementById('eMaterial').value = faca.material || '';
+            document.getElementById('eLargura').value = faca.largura;
+            document.getElementById('eAltura').value = faca.altura;
+            document.getElementById('eProfundidade').value = faca.profundidade || '';
+            document.getElementById('eRaio').value = faca.raio || 0;
+            document.getElementById('eSangria').value = faca.sangria || 3;
+            document.getElementById('eStatus').value = faca.status;
+            document.getElementById('eObservacoes').value = faca.observacoes || '';
+
+            updatePreviewEdit();
+        }
+
+        async function handleUpdateFaca(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('eId').value;
+            const faca = facasData.find(f => f.id === id) || window.getLocalFacas().find(f => f.id === id);
+
+            if (!faca) {
+                showToast('Faca não encontrada', 'error');
+                return;
+            }
+
+            const dados = {
+                codigo: document.getElementById('eCodigo').value.trim(),
+                nome: document.getElementById('eNome').value.trim(),
+                produto: document.getElementById('eProduto').value.trim(),
+                cliente: document.getElementById('eCliente').value.trim(),
+                categoria: document.getElementById('eCategoria').value.trim(),
+                material: document.getElementById('eMaterial').value.trim(),
+                largura: parseFloat(document.getElementById('eLargura').value) || 0,
+                altura: parseFloat(document.getElementById('eAltura').value) || 0,
+                profundidade: parseFloat(document.getElementById('eProfundidade').value) || null,
+                raio: parseFloat(document.getElementById('eRaio').value) || 0,
+                sangria: parseFloat(document.getElementById('eSangria').value) || 3,
+                status: document.getElementById('eStatus').value,
+                observacoes: document.getElementById('eObservacoes').value.trim(),
+                updated_at: new Date().toISOString()
+            };
+
+            if (!dados.codigo || !dados.nome || !dados.largura || !dados.altura) {
+                showToast('Preencha os campos obrigatórios', 'error');
+                return;
+            }
+
+            try {
+                if (supabaseConnected) {
+                    const result = await supabaseUpdateFaca(id, dados);
+                    if (!result.error) {
+                        showToast('Faca atualizada no Supabase!', 'success');
+                    } else {
+                        window.updateLocalFaca(id, dados);
+                        showToast('Atualizado localmente (Supabase offline)', 'warning');
+                    }
+                } else {
+                    window.updateLocalFaca(id, dados);
+                    showToast('Faca atualizada localmente', 'success');
+                }
+
+                facasData = window.getLocalFacas();
+                setTimeout(() => navigateTo('detalhes', id), 500);
+
+            } catch (error) {
+                showToast('Erro ao atualizar: ' + error.message, 'error');
+            }
+        }
+
+        async function handleDeleteFaca() {
+            const id = document.getElementById('eId').value;
+            if (!confirm('Tem certeza que deseja inativar esta faca?')) return;
+
+            try {
+                if (supabaseConnected) {
+                    await supabaseDeleteFaca(id);
+                }
+                const faca = window.updateLocalFaca(id, { status: 'inativo' });
+                if (faca) {
+                    showToast('Faca inativada com sucesso', 'success');
+                    setTimeout(() => navigateTo('biblioteca'), 500);
+                }
+            } catch (error) {
+                showToast('Erro ao inativar: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================
+        // NOVA VERSÃO
+        // ============================================
+        function novaVersao() {
+            const motivo = prompt('Motivo da alteração:');
+            if (motivo === null) return;
+
+            const largura = prompt('Nova largura (mm):');
+            if (largura === null) return;
+            const altura = prompt('Nova altura (mm):');
+            if (altura === null) return;
+
+            const l = parseFloat(largura);
+            const a = parseFloat(altura);
+
+            if (!l || !a) {
+                showToast('Largura e altura são obrigatórios', 'error');
+                return;
+            }
+
+            const faca = facasData.find(f => f.id === currentFacaId) || window.getLocalFacas().find(f => f.id ===
+            currentFacaId);
+            if (!faca) {
+                showToast('Faca não encontrada', 'error');
+                return;
+            }
+
+            const novoNumero = (faca.versao_atual || 0) + 1;
+
+            window.addLocalVersao({
+                faca_id: faca.id,
+                numero: novoNumero,
+                largura: l,
+                altura: a,
+                motivo: motivo || 'Nova versão',
+                created_at: new Date().toISOString()
+            });
+
+            // Atualizar faca
+            const updated = window.updateLocalFaca(faca.id, {
+                versao_atual: novoNumero,
+                largura: l,
+                altura: a,
+                updated_at: new Date().toISOString()
+            });
+
+            if (updated) {
+                facasData = window.getLocalFacas();
+                showToast(`Versão ${novoNumero} criada com sucesso!`, 'success');
+                setTimeout(() => loadDetalhes(currentFacaId), 500);
+            }
+        }
+
+        function recuperarVersao(facaId, versaoNum) {
+            if (!confirm(`Deseja recuperar a versão ${versaoNum}?`)) return;
+
+            const faca = facasData.find(f => f.id === facaId) || window.getLocalFacas().find(f => f.id === facaId);
+            const versao = window.getLocalVersoes(facaId).find(v => v.numero === parseInt(versaoNum));
+
+            if (!faca || !versao) {
+                showToast('Versão não encontrada', 'error');
+                return;
+            }
+
+            window.updateLocalFaca(facaId, {
+                versao_atual: versao.numero,
+                largura: versao.largura,
+                altura: versao.altura,
+                updated_at: new Date().toISOString()
+            });
+
+            facasData = window.getLocalFacas();
+            showToast(`Versão ${versaoNum} recuperada com sucesso!`, 'success');
+            setTimeout(() => loadDetalhes(facaId), 500);
+        }
+
+        // ============================================
+        // USUÁRIOS
+        // ============================================
+        function loadUsers() {
+            const list = document.getElementById('usersList');
+
+            if (currentUser?.role !== 'admin') {
+                list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">🔒</div>
+                            <h3>Acesso Restrito</h3>
+                            <p>Apenas administradores podem gerenciar usuários</p>
+                        </div>
+                    `;
+                return;
+            }
+
+            if (DB.users.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="icon">👤</div><p>Nenhum usuário cadastrado</p></div>';
+                return;
+            }
+
+            list.innerHTML = DB.users.map(u => `
+                    <div class="user-item">
+                        <div class="user-info">
+                            <span class="user-email">${u.nome || u.email}</span>
+                            <span style="font-size:0.8rem;color:var(--gray-500);">${u.email}</span>
+                            ${getRoleBadge(u.role)}
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <span style="font-size:0.7rem;color:var(--gray-400);">${formatDate(u.created_at)}</span>
+                            ${u.id !== currentUser?.id ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">🗑️</button>` : ''}
+                            ${u.id === currentUser?.id ? '<span style="font-size:0.7rem;color:var(--gray-400);">(Você)</span>' : ''}
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function handleCreateUser(event) {
+            event.preventDefault();
+
+            if (currentUser?.role !== 'admin') {
+                showToast('Apenas administradores podem criar usuários', 'error');
+                return;
+            }
+
+            const nome = document.getElementById('uNome').value.trim();
+            const email = document.getElementById('uEmail').value.trim();
+            const password = document.getElementById('uPassword').value;
+            const role = document.getElementById('uRole').value;
+
+            if (!nome || !email || !password) {
+                showToast('Preencha todos os campos', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast('A senha deve ter no mínimo 6 caracteres', 'error');
+                return;
+            }
+
+            if (DB.users.find(u => u.email === email)) {
+                showToast('Este e-mail já está cadastrado', 'error');
+                return;
+            }
+
+            DB.users.push({
+                id: String(nextUserId++),
+                nome,
+                email,
+                password,
+                role,
+                created_at: new Date().toISOString()
+            });
+
+            showToast(`Usuário ${nome} criado com sucesso!`, 'success');
+            document.getElementById('uNome').value = '';
+            document.getElementById('uEmail').value = '';
+            document.getElementById('uPassword').value = '';
+            loadUsers();
+            switchTab('usuarios-lista');
+        }
+
+        function deleteUser(id) {
+            if (!confirm('Tem certeza que deseja remover este usuário?')) return;
+
+            const user = DB.users.find(u => u.id === id);
+            if (!user) return;
+
+            if (user.role === 'admin' && DB.users.filter(u => u.role === 'admin').length === 1) {
+                showToast('Não é possível remover o último administrador', 'error');
+                return;
+            }
+
+            DB.users = DB.users.filter(u => u.id !== id);
+            showToast('Usuário removido com sucesso', 'success');
+            loadUsers();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+            const tab = document.querySelector(`.tab[onclick*="${tabId}"]`);
+            if (tab) tab.classList.add('active');
+
+            const content = document.getElementById(tabId);
+            if (content) content.classList.add('active');
+
+            if (tabId === 'usuarios-lista') loadUsers();
+        }
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+
+        // Inicializar dados locais
+        initLocalData();
+
+        // Inicializar Supabase
+        initSupabase();
+
+        // Carregar facas do Supabase
+        async function inicializarFacas() {
+            const result = await supabaseGetFacas();
+            if (result.data && result.data.length > 0) {
+                facasData = result.data;
+                console.log(`📚 ${facasData.length} facas carregadas do Supabase`);
+            } else {
+                facasData = window.getLocalFacas();
+                console.log(`📚 ${facasData.length} facas carregadas localmente`);
+            }
+        }
+
+        // Inicializar
+        (async function() {
+            await inicializarFacas();
+            showLoginForm();
+
+            console.log('🚀 FacaHub carregado!');
+            console.log('📌 Credenciais padrão:');
+            console.log('   E-mail: admin@facahub.com');
+            console.log('   Senha: admin123');
+            console.log('📌 Supabase:', supabaseConnected ? '✅ Conectado' : '⚠️ Offline (modo local)');
+            console.log('📌 Para configurar o Supabase, edite as variáveis no início do script.');
+        })();
+    </script>
+
+    <!-- Import do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+    </script>
+</body>
+</html>
