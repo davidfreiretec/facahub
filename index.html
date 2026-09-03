@@ -1780,15 +1780,15 @@
     <!-- ===== SCRIPTS ===== -->
     <script>
         // ============================================
-        // CONFIGURAÇÃO DO SUPABASE
+        // 🔴 CONFIGURAÇÃO DO SUPABASE - SUBSTITUA AQUI! 🔴
         // ============================================
-        // 🔴 SUBSTITUA PELAS SUAS CREDENCIAIS 🔴
-        const SUPABASE_URL = 'https://seu-projeto.supabase.co';
-        const SUPABASE_ANON_KEY = 'sua-chave-anon-aqui';
+        // Cole SUA Project URL e SUA anon key do Supabase
+        const SUPABASE_URL = 'https://rxyfwzxmyhfzogwutuu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4eWZ3enhteWhmem9nd3V0dXUiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczOTUxOTc2MCwiZXhwIjoyMDU1MDk1NzYwfQ.voMlGTTQ3O7nu4DmK3G_Qy8yLW3TbJ3gJQySZufLAYE';
         // ============================================
 
         // ============================================
-        // BANCO DE DADOS LOCAL (Usuários)
+        // BANCO DE DADOS LOCAL (Usuários - Fallback)
         // ============================================
         const DB = {
             users: [{
@@ -1816,6 +1816,8 @@
                     supabaseConnected = true;
                     updateDbStatus(true);
                     console.log('✅ Supabase conectado!');
+                    // Testar conexão
+                    testSupabaseConnection();
                 } else {
                     console.warn('⚠️ Supabase não carregado. Usando dados locais.');
                     supabaseConnected = false;
@@ -1825,6 +1827,21 @@
                 console.warn('⚠️ Erro ao conectar Supabase:', e);
                 supabaseConnected = false;
                 updateDbStatus(false);
+            }
+        }
+
+        async function testSupabaseConnection() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('facas')
+                    .select('count', { count: 'exact', head: true });
+                if (error) {
+                    console.warn('⚠️ Erro ao testar conexão:', error);
+                } else {
+                    console.log('✅ Conexão com Supabase OK!');
+                }
+            } catch (e) {
+                console.warn('⚠️ Erro no teste de conexão:', e);
             }
         }
 
@@ -1854,6 +1871,7 @@
                     .order('created_at', { ascending: false });
                 return { data: data || [], error, local: false };
             } catch (e) {
+                console.error('Erro ao buscar facas:', e);
                 return { data: [], error: e, local: true };
             }
         }
@@ -1870,6 +1888,7 @@
                     .single();
                 return { data, error, local: false };
             } catch (e) {
+                console.error('Erro ao criar faca:', e);
                 return { data: null, error: e, local: true };
             }
         }
@@ -1887,6 +1906,7 @@
                     .single();
                 return { data, error, local: false };
             } catch (e) {
+                console.error('Erro ao atualizar faca:', e);
                 return { data: null, error: e, local: true };
             }
         }
@@ -1902,6 +1922,7 @@
                     .eq('id', id);
                 return { error, local: false };
             } catch (e) {
+                console.error('Erro ao inativar faca:', e);
                 return { error: e, local: true };
             }
         }
@@ -1912,7 +1933,6 @@
         let localFacas = [];
         let localVersoes = [];
 
-        // Dados iniciais locais
         function initLocalData() {
             localFacas = [{
                 id: '1',
@@ -2021,7 +2041,6 @@
             let lastId = 5;
             let lastVersaoId = 7;
 
-            // Funções para manipular dados locais
             window.getLocalFacas = () => [...localFacas];
             window.getLocalVersoes = (facaId) => localVersoes.filter(v => v.faca_id === facaId);
             window.addLocalFaca = (dados) => {
@@ -2053,7 +2072,6 @@
         let currentSearchTerm = '';
         let activeFilters = {};
         let facasData = [];
-        let isLoading = false;
 
         // ============================================
         // UTILITÁRIOS
@@ -2475,19 +2493,20 @@
             grid.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
 
             try {
-                // Tentar buscar do Supabase
                 let result = await supabaseGetFacas();
 
                 if (result.data && result.data.length > 0) {
                     facasData = result.data;
+                    console.log(`📚 ${facasData.length} facas carregadas do Supabase`);
                 } else {
                     facasData = window.getLocalFacas();
                     if (!result.local) {
                         showToast('Nenhuma faca no Supabase. Usando dados locais.', 'info');
+                    } else {
+                        console.log(`📚 ${facasData.length} facas carregadas localmente`);
                     }
                 }
 
-                // Aplicar busca e filtros
                 let filtered = [...facasData];
                 const search = currentSearchTerm.toLowerCase();
 
@@ -2534,7 +2553,6 @@
 
                 grid.innerHTML = filtered.map(f => {
                     const versoes = window.getLocalVersoes(f.id);
-                    const versaoCount = versoes.length || 1;
                     return `
                             <div class="faca-card" onclick="navigateTo('detalhes', '${f.id}')">
                                 <div class="faca-preview">
@@ -2605,14 +2623,12 @@
             try {
                 let savedData;
 
-                // Tentar salvar no Supabase
                 if (supabaseConnected) {
                     const result = await supabaseCreateFaca(dados);
                     if (result.data && !result.error) {
                         savedData = result.data;
                         showToast('Faca salva no Supabase com sucesso!', 'success');
                     } else {
-                        // Fallback para local
                         savedData = window.addLocalFaca(dados);
                         showToast('Supabase offline. Salvo localmente.', 'warning');
                     }
@@ -2621,7 +2637,6 @@
                     showToast('Modo local. Faca salva apenas no navegador.', 'info');
                 }
 
-                // Criar versão inicial localmente
                 window.addLocalVersao({
                     faca_id: savedData.id,
                     numero: 1,
@@ -2631,7 +2646,6 @@
                     created_at: new Date().toISOString()
                 });
 
-                // Atualizar dados locais
                 facasData = window.getLocalFacas();
 
                 setTimeout(() => navigateTo('biblioteca'), 500);
@@ -2853,7 +2867,6 @@
                 created_at: new Date().toISOString()
             });
 
-            // Atualizar faca
             const updated = window.updateLocalFaca(faca.id, {
                 versao_atual: novoNumero,
                 largura: l,
@@ -3007,13 +3020,9 @@
         // INICIALIZAÇÃO
         // ============================================
 
-        // Inicializar dados locais
         initLocalData();
-
-        // Inicializar Supabase
         initSupabase();
 
-        // Carregar facas do Supabase
         async function inicializarFacas() {
             const result = await supabaseGetFacas();
             if (result.data && result.data.length > 0) {
@@ -3025,7 +3034,6 @@
             }
         }
 
-        // Inicializar
         (async function() {
             await inicializarFacas();
             showLoginForm();
@@ -3035,11 +3043,9 @@
             console.log('   E-mail: admin@facahub.com');
             console.log('   Senha: admin123');
             console.log('📌 Supabase:', supabaseConnected ? '✅ Conectado' : '⚠️ Offline (modo local)');
-            console.log('📌 Para configurar o Supabase, edite as variáveis no início do script.');
         })();
     </script>
 
-    <!-- Import do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
     </script>
 </body>
