@@ -1,0 +1,30 @@
+# FacaHub - Biblioteca de Facas e Gabaritos
+
+Sistema web para gerenciamento de facas e gabaritos técnicos.
+
+## 🔗 Acesso
+
+- **Produção**: [https://facahub.netlify.app](https://facahub.netlify.app)
+
+## 🚀 Tecnologias
+
+- **Frontend**: HTML5, CSS3, JavaScript ES6+
+- **Backend/Database**: Supabase (PostgreSQL)
+- **Hospedagem**: Netlify
+
+## 🔑 Credenciais Padrão
+
+- **E-mail**: admin@facahub.com
+- **Senha**: admin123
+
+## 📤 Deploy no Netlify
+
+1. Conecte seu repositório GitHub ao Netlify
+2. Configure as variáveis de ambiente:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+3. Faça o deploy
+
+## 📄 Licença
+
+MIT
